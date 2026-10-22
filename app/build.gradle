@@ -1,0 +1,45 @@
+plugins {
+    id 'com.android.application'
+}
+
+android {
+    namespace 'com.yunus.ekranasistani'
+    compileSdk 35
+
+    defaultConfig {
+        applicationId 'com.yunus.ekranasistani'
+        minSdk 30
+        targetSdk 35
+        versionCode 1
+        versionName '1.0'
+    }
+
+    // Sabit imza: her derleme aynı anahtarla imzalanır, böylece güncellemeler
+    // eski sürümün üstüne sorunsuz kurulur.
+    signingConfigs {
+        fixed {
+            storeFile file('signing.keystore')
+            storeType 'pkcs12'
+            storePassword 'ekranasistani'
+            keyAlias 'ekran'
+            keyPassword 'ekranasistani'
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            signingConfig signingConfigs.fixed
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    lint {
+        checkReleaseBuilds false
+        abortOnError false
+    }
+}
