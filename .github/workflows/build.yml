@@ -36,3 +36,17 @@ jobs:
             --title "Ekran Asistanı (son sürüm)" \
             --notes "Telefondan indirip kur. Commit: ${{ github.sha }}" \
             --target "${{ github.sha }}"
+
+      # Yedek indirme linki: APK'yı ayrı "apk" dalına da koy (raw.githubusercontent.com üzerinden iner).
+      - name: APK'yı apk dalına koy
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p /tmp/apkdal && cp EkranAsistani.apk /tmp/apkdal/
+          cd /tmp/apkdal
+          git init -q -b apk
+          git config user.name "github-actions"
+          git config user.email "github-actions@users.noreply.github.com"
+          git add EkranAsistani.apk
+          git commit -qm "APK ${{ github.sha }}"
+          git push -f "https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git" apk
